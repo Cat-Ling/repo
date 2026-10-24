@@ -1,0 +1,11 @@
+{
+  "origin": "Cat-Ling's Repo",
+  "label": "Cat-Ling",
+  "description": "Rootless & Rootful iOS Jailbreak Packages by Cat-Ling (AppSync Unified, appinst, and more)",
+  "repo_url": "https://cat-ling.github.io/repo",
+  "maintainer": "Cat-Ling <cat-ling@yemoja.xyz>",
+  "source_repositories": [
+    "Cat-Ling/AppSync",
+    "Cat-Ling/appinst"
+  ]
+}

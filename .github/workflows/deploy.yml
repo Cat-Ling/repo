@@ -1,0 +1,48 @@
+name: Build and Deploy APT Repo to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  repository_dispatch:
+    types:
+      - release-published
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy Sileo/Zebra APT Repo
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout Repo Builder
+        uses: actions/checkout@v4
+
+      - name: Build APT Repository & Sileo/Zebra Metadata
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 build_repo.py _site
+
+      - name: Upload GitHub Pages Artifact (Zero Git Binary Bloat)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
